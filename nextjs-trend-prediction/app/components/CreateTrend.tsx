@@ -118,8 +118,12 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
       console.error('❌ Full error details:', err);
       console.error('❌ Error message:', errorMessage);
       
-      if (errorMessage.includes('already been processed')) {
-        setError('✅ This prediction was already created! A prediction with this title already exists.');
+      // Check for specific Solana errors
+      if (errorMessage.includes('0x0') || errorMessage.includes('custom program error: 0x0')) {
+        // This is an account already exists error
+        setError('❌ A prediction with this title already exists for your account. Please use a different title.');
+      } else if (errorMessage.includes('already been processed')) {
+        setError('❌ Transaction already processed. This might be a duplicate submission.');
       } else if (err && typeof err === 'object' && 'logs' in err) {
         console.error('❌ Transaction logs:', (err as any).logs);
         setError(`❌ Error: ${errorMessage}`);
