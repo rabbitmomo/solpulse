@@ -109,7 +109,8 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
       console.log('⏳ Waiting for confirmation...');
       await connection.confirmTransaction(signature, 'confirmed');
 
-      setSuccess(`✅ Proposal created! TX: ${signature}`);
+      const successMessage = `✅ Proposal created!\nTX: ${signature}\nTrend ID: ${proposalPDA.toBase58()}`;
+      setSuccess(successMessage);
       setFormData({ title: '', description: '', tokenAddress: '', durationDays: '7' });
       onProposalCreated?.(formData.title);
     } catch (err) {
@@ -146,17 +147,36 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
           <div className="alert alert-success alert-dismissible fade show" role="alert">
             {success.includes('TX:') ? (
               <>
-                <div className="mb-2">✅ Proposal created!</div>
-                <div>
-                  <small className="text-muted">TX: </small>
-                  <a
-                    href={`https://explorer.solana.com/tx/${success.split('TX: ')[1]}?cluster=devnet`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-decoration-none"
-                  >
-                    <code className="bg-white px-2 py-1 rounded text-success cursor-pointer">{success.split('TX: ')[1]}</code>
-                  </a>
+                <div className="mb-4">
+                  <h5 className="text-success mb-3">✅ Proposal created successfully!</h5>
+                </div>
+                <div className="mb-3">
+                  <div className="mb-2">
+                    <small className="text-muted d-block mb-2">📌 <strong>Trend ID (On-Chain Address)</strong>:</small>
+                    <a
+                      href={`https://explorer.solana.com/address/${success.split('Trend ID: ')[1]}?cluster=devnet`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-sm btn-outline-success w-100 text-start"
+                      style={{ fontSize: '0.9rem', wordBreak: 'break-all', padding: '8px 12px' }}
+                    >
+                      {success.split('Trend ID: ')[1]} →
+                    </a>
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <div className="mb-2">
+                    <small className="text-muted d-block mb-2">🔗 <strong>View Transaction</strong>:</small>
+                    <a
+                      href={`https://explorer.solana.com/tx/${success.split('TX: ')[1].split('\n')[0]}?cluster=devnet`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-sm btn-outline-success w-100 text-start"
+                      style={{ fontSize: '0.9rem', wordBreak: 'break-all', padding: '8px 12px' }}
+                    >
+                      {success.split('TX: ')[1].split('\n')[0]} →
+                    </a>
+                  </div>
                 </div>
               </>
             ) : (
