@@ -153,7 +153,7 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
 
         <div className="border-bottom pb-3 mb-3">
           <p className="small text-muted">Description</p>
-          <p className="text-body" style={{ color: '#14f195' }}>{proposal.description}</p>
+          <p style={{ color: '#14f195' }} className="fw-bold">{proposal.description}</p>
         </div>
 
         <div className="row">
