@@ -36,6 +36,7 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
   const [proposal, setProposal] = useState<ProposalData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [proposalPDA, setProposalPDA] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProposal = async () => {
@@ -47,15 +48,16 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
         const program = getProgram(provider);
 
         // Derive proposal PDA
-        const [proposalPDA] = PublicKey.findProgramAddressSync(
+        const [pda] = PublicKey.findProgramAddressSync(
           [Buffer.from('proposal'), proposalAuthor.toBuffer(), Buffer.from(proposalTitle)],
           program.programId
         );
 
-        console.log('📌 Fetching proposal from PDA:', proposalPDA.toBase58());
+        console.log('📌 Fetching proposal from PDA:', pda.toBase58());
+        setProposalPDA(pda.toBase58());
 
         // Fetch proposal account
-        const proposalAccount = await program.account.proposalAccount.fetch(proposalPDA);
+        const proposalAccount = await program.account.proposalAccount.fetch(pda);
 
         const formattedProposal: ProposalData = {
           author: proposalAccount.author,
@@ -242,9 +244,29 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
           </div>
         )}
 
-        <div className="border-top pt-3" style={{ fontSize: '0.75rem', color: '#6a4c93' }}>
-          <p className="mb-1">Author: {proposal.author.toBase58().slice(0, 20)}...</p>
-          <p className="mb-0">PDA derived from: [proposal, author, title]</p>
+        <div className="border-top pt-3">
+          <div className="mb-3">
+            <p className="small text-muted mb-2">Author</p>
+            <p className="small font-monospace" style={{ color: '#14f195' }}>
+              {proposal.author.toBase58().slice(0, 20)}...
+            </p>
+          </div>
+          
+          {proposalPDA && (
+            <div className="mb-3">
+              <p className="small text-muted mb-2">📌 PDA Address (On-Chain)</p>
+              <p className="small text-muted mb-2" style={{ fontSize: '0.75rem' }}>Derived from: [proposal, author, title]</p>
+              <a
+                href={`https://explorer.solana.com/address/${proposalPDA}?cluster=devnet`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-sm btn-outline-success w-100 text-start"
+                style={{ fontSize: '0.85rem', padding: '8px 12px', wordBreak: 'break-all' }}
+              >
+                Program Derived Address: {proposalPDA} →
+              </a>
+            </div>
+          )}
         </div>
         </div>
       </div>
