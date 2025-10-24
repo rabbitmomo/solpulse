@@ -1,0 +1,281 @@
+@import "tailwindcss";
+
+:root {
+  --solana-purple: #9945ff;
+  --solana-blue: #14f195;
+  --solana-dark: #000000;
+  
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --bs-primary: #9945ff;
+  --bs-primary-rgb: 153, 69, 255;
+  --bs-secondary: #14f195;
+  --bs-secondary-rgb: 20, 241, 149;
+  --bs-warning: #9945ff;
+  --bs-warning-rgb: 153, 69, 255;
+  --bs-danger: #14f195;
+  --bs-danger-rgb: 20, 241, 149;
+  --bs-success: #14f195;
+  --bs-success-rgb: 20, 241, 149;
+  --bs-info: #14f195;
+  --bs-info-rgb: 20, 241, 149;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--solana-dark);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Bootstrap overrides for Solana purple & blue theme */
+.card {
+  box-shadow: 0 2px 16px rgba(153, 69, 255, 0.15);
+  border-radius: 12px;
+  background: #1a1a2e;
+  border: 1px solid #9945ff;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #9945ff 0%, #6a4c93 100%) !important;
+  color: #14f195 !important;
+  border-color: #9945ff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-body {
+  padding: 1.5rem;
+  background: #0f0f1e;
+  color: #e0e0e0;
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #14f195;
+}
+
+/* Label styling - Solana blue */
+.form-label {
+  color: #14f195 !important;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Text styling */
+.text-secondary {
+  color: #14f195 !important;
+}
+
+/* Small text */
+small {
+  color: #9945ff !important;
+}
+
+/* Better styling for badges and info text */
+.text-muted {
+  color: #9945ff !important;
+}
+
+/* Progress bar styling */
+.progress {
+  background-color: #2a2a4e;
+  border-radius: 8px;
+  border: 1px solid #9945ff;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #9945ff 0%, #14f195 100%) !important;
+}
+
+/* Button styling */
+.btn {
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary, .btn-warning {
+  background: linear-gradient(135deg, #9945ff 0%, #6a4c93 100%) !important;
+  border-color: #14f195 !important;
+  color: #14f195 !important;
+  box-shadow: 0 4px 12px rgba(153, 69, 255, 0.3);
+}
+
+.btn-primary:hover, .btn-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(153, 69, 255, 0.5);
+  background: linear-gradient(135deg, #6a4c93 0%, #9945ff 100%) !important;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #14f195 0%, #0a9d5d 100%) !important;
+  border-color: #9945ff !important;
+  color: #000000 !important;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(20, 241, 149, 0.5);
+}
+
+.btn:disabled {
+  background: #2a2a4e !important;
+  opacity: 0.6;
+}
+
+/* Alert styling */
+.alert {
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  border: 1px solid;
+}
+
+.alert-danger {
+  background: rgba(153, 69, 255, 0.1) !important;
+  border-color: #9945ff !important;
+  color: #ff6b6b !important;
+}
+
+.alert-success {
+  background: rgba(20, 241, 149, 0.1) !important;
+  border-color: #14f195 !important;
+  color: #14f195 !important;
+}
+
+.alert-warning {
+  background: rgba(153, 69, 255, 0.1) !important;
+  border-color: #9945ff !important;
+  color: #9945ff !important;
+}
+
+/* Grid and spacing improvements */
+.row {
+  row-gap: 1.5rem;
+}
+
+/* Dark mode cards */
+.bg-secondary {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+  border: 2px solid #9945ff !important;
+}
+
+.bg-dark {
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%) !important;
+}
+
+/* Light text on dark backgrounds */
+.bg-secondary .text-light,
+.bg-dark .text-light {
+  color: #14f195 !important;
+}
+
+/* Enhance form controls */
+.form-control {
+  border-radius: 8px;
+  transition: all 0.3s;
+  background-color: #1a1a2e;
+  border: 1px solid #9945ff;
+  color: #14f195;
+}
+
+.form-control::placeholder {
+  color: #6a4c93;
+}
+
+.form-control:focus {
+  border-color: #14f195;
+  box-shadow: 0 0 12px rgba(20, 241, 149, 0.4);
+  background-color: #0f0f1e;
+  color: #14f195;
+}
+
+.form-select {
+  background-color: #1a1a2e !important;
+  border: 1px solid #9945ff !important;
+  color: #14f195 !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2314f195' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.form-select:focus {
+  border-color: #14f195 !important;
+  box-shadow: 0 0 12px rgba(20, 241, 149, 0.4) !important;
+  background-color: #0f0f1e !important;
+}
+
+.form-select option {
+  background-color: #1a1a2e;
+  color: #14f195;
+}
+
+/* Better container padding */
+.container-lg {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Code styling */
+code {
+  background-color: #1a1a2e;
+  color: #14f195;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid #9945ff;
+  font-size: 0.875rem;
+}
+
+/* List group item styling */
+.list-group-item {
+  background: #1a1a2e !important;
+  border-color: #9945ff !important;
+  color: #e0e0e0 !important;
+  transition: all 0.3s;
+}
+
+.list-group-item:hover {
+  background: #242440 !important;
+  border-color: #14f195 !important;
+  box-shadow: 0 0 12px rgba(20, 241, 149, 0.3);
+}
+
+/* Improved link styling */
+a {
+  color: #14f195;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+a:hover {
+  color: #9945ff;
+  text-decoration: underline;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #9945ff 0%, #14f195 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #14f195 0%, #9945ff 100%);
+}

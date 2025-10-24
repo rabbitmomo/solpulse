@@ -1,0 +1,360 @@
+{
+  "address": "D9ZvX3tLKzCEhX6HM4FAdFsJnpqewW6canG5UJAfrAU5",
+  "metadata": {
+    "name": "trend_prediction",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "close_proposal",
+      "docs": [
+        "Close proposal and set outcome"
+      ],
+      "discriminator": [
+        213,
+        178,
+        139,
+        19,
+        50,
+        191,
+        82,
+        245
+      ],
+      "accounts": [
+        {
+          "name": "author",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "proposal_account",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_proposal",
+      "docs": [
+        "Create a new DAO proposal for market sentiment voting"
+      ],
+      "discriminator": [
+        132,
+        116,
+        68,
+        174,
+        216,
+        160,
+        198,
+        22
+      ],
+      "accounts": [
+        {
+          "name": "author",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "proposal_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  112,
+                  111,
+                  115,
+                  97,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "author"
+              },
+              {
+                "kind": "arg",
+                "path": "title"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "token_address",
+          "type": "pubkey"
+        },
+        {
+          "name": "expiration_time",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "vote_on_proposal",
+      "docs": [
+        "Vote YES or NO on a proposal (+1 vote per user, one vote per side)"
+      ],
+      "discriminator": [
+        188,
+        239,
+        13,
+        88,
+        119,
+        199,
+        251,
+        119
+      ],
+      "accounts": [
+        {
+          "name": "voter",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "proposal_account",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "vote_direction",
+          "type": {
+            "defined": {
+              "name": "VoteDirection"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "ProposalAccount",
+      "discriminator": [
+        164,
+        190,
+        4,
+        248,
+        203,
+        124,
+        243,
+        64
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "TitleTooLong",
+      "msg": "Title exceeds maximum length of 100 characters"
+    },
+    {
+      "code": 6001,
+      "name": "DescriptionTooLong",
+      "msg": "Description exceeds maximum length of 500 characters"
+    },
+    {
+      "code": 6002,
+      "name": "ProposalClosed",
+      "msg": "Proposal is already closed"
+    },
+    {
+      "code": 6003,
+      "name": "ProposalExpired",
+      "msg": "Proposal has expired"
+    },
+    {
+      "code": 6004,
+      "name": "AlreadyVotedYes",
+      "msg": "You have already voted YES"
+    },
+    {
+      "code": 6005,
+      "name": "AlreadyVotedNo",
+      "msg": "You have already voted NO"
+    },
+    {
+      "code": 6006,
+      "name": "MaxVotersReached",
+      "msg": "Maximum number of voters reached"
+    },
+    {
+      "code": 6007,
+      "name": "ProposalAlreadyClosed",
+      "msg": "Proposal has already been closed"
+    },
+    {
+      "code": 6008,
+      "name": "Unauthorized",
+      "msg": "Unauthorized - only author can close proposal"
+    },
+    {
+      "code": 6009,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow occurred"
+    },
+    {
+      "code": 6010,
+      "name": "Underflow",
+      "msg": "Arithmetic underflow occurred"
+    }
+  ],
+  "types": [
+    {
+      "name": "ProposalAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "author",
+            "type": "pubkey"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "token_address",
+            "type": "pubkey"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "expiration_time",
+            "type": "i64"
+          },
+          {
+            "name": "yes_votes",
+            "type": "u32"
+          },
+          {
+            "name": "no_votes",
+            "type": "u32"
+          },
+          {
+            "name": "unique_voters",
+            "type": "u32"
+          },
+          {
+            "name": "voters",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "VoterRecord"
+                }
+              }
+            }
+          },
+          {
+            "name": "closed",
+            "type": "bool"
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "ProposalOutcome"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProposalOutcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "YesWins"
+          },
+          {
+            "name": "NoWins"
+          },
+          {
+            "name": "Tied"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteDirection",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoterRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "voter",
+            "type": "pubkey"
+          },
+          {
+            "name": "voted_yes",
+            "type": "bool"
+          },
+          {
+            "name": "voted_no",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "MAX_PROPOSAL_DURATION",
+      "type": "i64",
+      "value": "7776000"
+    },
+    {
+      "name": "MIN_PROPOSAL_DURATION",
+      "type": "i64",
+      "value": "3600"
+    },
+    {
+      "name": "PROPOSAL_SEED",
+      "type": "string",
+      "value": "\"proposal\""
+    }
+  ]
+}
