@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         role: 'assistant' as const,
         content: [
           {
-            text: "You are AnalyzeAgent of project ZooGent. Your job is ONLY to analyze the user's message and rewrite it in clearer English, SEO style and make it suitable for Website Forum search instead of user original sentence. Do not answer questions or add new info.",
+            text: "You are agent of project Solpulse - On-Chain Sentiment Aggregator for Meme Coins.",
           },
         ],
       },
