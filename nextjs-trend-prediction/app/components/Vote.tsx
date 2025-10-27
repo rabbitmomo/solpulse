@@ -89,18 +89,34 @@ export const Vote: React.FC<VoteProps> = ({ proposalTitle, proposalAuthor, onVot
       setUserVote(direction);
       onVoteSuccess?.();
 
-      setTimeout(() => checkUserVote(), 1000);
+      setTimeout(() => checkUserVote(), 3000);
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       
-      if (errorMessage.includes('AlreadyVotedYes')) {
-        setError('❌ You already voted YES. Switch your vote with the NO button.');
+      if (errorMessage.includes('already been processed')) {
+        setSuccess('✅ Vote recorded! Your vote is locked.');
+        setTimeout(() => setSuccess(null), 3000);
+        setTimeout(() => checkUserVote(), 1000);
+        return;
+      } else if (errorMessage.includes('WalletSignTransactionError') || errorMessage.includes('sign')) {
+        setError('❌ Wallet signature failed. Please check your wallet and try again.');
+      } else if (errorMessage.includes('AlreadyVotedYes')) {
+        setSuccess('✅ Your vote is locked: YES');
+        setTimeout(() => setSuccess(null), 3000);
+        setUserVote('YES');
+        return;
       } else if (errorMessage.includes('AlreadyVotedNo')) {
-        setError('❌ You already voted NO. Switch your vote with the YES button.');
+        setSuccess('✅ Your vote is locked: NO');
+        setTimeout(() => setSuccess(null), 3000);
+        setUserVote('NO');
+        return;
       } else if (errorMessage.includes('ProposalClosed')) {
         setError('❌ This proposal is closed.');
       } else if (errorMessage.includes('ProposalExpired')) {
         setError('❌ This proposal has expired.');
+      } else if (errorMessage.includes('User rejected')) {
+        setError('❌ Transaction rejected by wallet.');
       } else {
         setError(`❌ Error: ${errorMessage}`);
       }

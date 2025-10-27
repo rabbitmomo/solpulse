@@ -107,10 +107,16 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       
-      if (errorMessage.includes('0x0') || errorMessage.includes('custom program error: 0x0')) {
+      if (errorMessage.includes('already been processed') || errorMessage.includes('This transaction has already been processed')) {
+        setSuccess('✅ Prediction created successfully! Transaction confirmed on-chain.');
+        setFormData({ title: '', description: '', tokenAddress: '', durationDays: '7' });
+        return;
+      } else if (errorMessage.includes('0x0') || errorMessage.includes('custom program error: 0x0')) {
         setError('❌ Prediction title exists for your account.');
-      } else if (errorMessage.includes('already been processed')) {
-        setError('❌ Transaction already processed.');
+      } else if (errorMessage.includes('User rejected') || errorMessage.includes('rejected')) {
+        setError('❌ Transaction rejected by wallet.');
+      } else if (errorMessage.includes('Simulation failed')) {
+        setError('❌ Transaction simulation failed. Check your account balance and inputs.');
       } else if (err && typeof err === 'object' && 'logs' in err) {
         setError(`❌ Error: ${errorMessage}`);
       } else {
