@@ -9,6 +9,8 @@ import { CreateTrend } from './components/CreateTrend';
 import { Vote } from './components/Vote';
 import { TrendViewer } from './components/TrendViewer';
 import { PredictionsList } from './components/PredictionsList';
+import { BedrockChat } from './components/BedrockChat';
+import { GoogleSearch } from './components/GoogleSearch';
 import { getProgram } from '@/lib/program';
 
 interface ProposalItem {
@@ -164,11 +166,19 @@ export default function Home() {
         {/* Tab Content */}
         <div>
           {activeTab === 'home' && (
-            <PredictionsList
-              onSelectPrediction={handleSelectPrediction}
-              onCreateClick={handleCreateClick}
-              refreshTrigger={refreshTrigger}
-            />
+            <div className="row g-4">
+              <div className="col-lg-8">
+                <PredictionsList
+                  onSelectPrediction={handleSelectPrediction}
+                  onCreateClick={handleCreateClick}
+                  refreshTrigger={refreshTrigger}
+                />
+              </div>
+              <div className="col-lg-4 d-flex flex-column gap-3">
+                <BedrockChat />
+                <GoogleSearch />
+              </div>
+            </div>
           )}
 
           {activeTab === 'create' && (
@@ -211,58 +221,10 @@ export default function Home() {
               <div className="col-lg-8">
                 <div className="card border-0 shadow-lg mb-4">
                   <div className="card-header">
-                    <h5 className="card-title mb-0" style={{ color: '#fff' }}>Find a Prediction</h5>
+                    <h5 className="card-title mb-0" style={{ color: '#fff' }}>All Predictions</h5>
                   </div>
                   <div className="card-body">
-                    <div className="mb-4">
-                      <h6 className="fw-bold mb-3" style={{ color: '#14f195' }}>Search Prediction</h6>
-                      <div>
-                        <div className="mb-3">
-                          <label className="form-label fw-bold">
-                            Prediction Title
-                          </label>
-                          <input
-                            type="text"
-                            value={proposalTitle}
-                            onChange={(e) => setProposalTitle(e.target.value)}
-                            placeholder="eg: $SHIB Will Pump 2x"
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="mb-3">
-                          <label className="form-label fw-bold">
-                            Prediction Author Address
-                          </label>
-                          <input
-                            type="text"
-                            value={proposalAuthor?.toBase58() || ''}
-                            onChange={(e) => {
-                              try {
-                                setProposalAuthor(new PublicKey(e.target.value));
-                              } catch {
-                                // Invalid address
-                              }
-                            }}
-                            placeholder="Solana address"
-                            className="form-control"
-                          />
-                          <small className="text-muted d-block mt-2">
-                            Enter the public key of the prediction author
-                          </small>
-                        </div>
-                      </div>
-                      <button
-                        onClick={handleLoadProposal}
-                        className="btn btn-primary w-100"
-                      >
-                        Load Prediction
-                      </button>
-                    </div>
-
-                    <hr className="my-4" />
-
                     <div>
-                      <h6 className="fw-bold mb-3" style={{ color: '#fff' }}>All Predictions</h6>
                       {loadingProposals ? (
                         <div className="alert alert-info">Loading proposals...</div>
                       ) : proposals.length === 0 ? (
@@ -323,6 +285,57 @@ export default function Home() {
               </div>
 
               <div className="col-lg-4">
+                <div className="card border-0 shadow-lg mb-4">
+                  <div className="card-header">
+                    <h5 className="card-title mb-0" style={{ color: '#fff' }}>Find a Prediction</h5>
+                  </div>
+                  <div className="card-body">
+                    <div className="mb-4">
+                      <div>
+                        <div className="mb-3">
+                          <label className="fw-bold" style={{ color: '#fff !important' }}>
+                            Prediction Title
+                          </label>
+                          <input
+                            type="text"
+                            value={proposalTitle}
+                            onChange={(e) => setProposalTitle(e.target.value)}
+                            placeholder="eg: $SHIB Will Pump 2x"
+                            className="form-control"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label className="fw-bold" style={{ color: '#fff !important' }}>
+                            Prediction Author Address
+                          </label>
+                          <input
+                            type="text"
+                            value={proposalAuthor?.toBase58() || ''}
+                            onChange={(e) => {
+                              try {
+                                setProposalAuthor(new PublicKey(e.target.value));
+                              } catch {
+                                // Invalid address
+                              }
+                            }}
+                            placeholder="Solana address"
+                            className="form-control"
+                          />
+                          <small className="text-muted d-block mt-2">
+                            Enter the public key of the prediction author
+                          </small>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleLoadProposal}
+                        className="btn btn-primary w-100"
+                      >
+                        Load Prediction
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="card bg-secondary border-secondary">
                   <div className="card-body">
                     <h5 className="card-title" style={{ color: '#fff' }}>SolPulse Guide</h5>

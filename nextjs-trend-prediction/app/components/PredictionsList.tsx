@@ -36,7 +36,6 @@ export const PredictionsList: React.FC<PredictionsListProps> = ({
         const provider = new anchor.AnchorProvider(connection, {} as any, {});
         const program = getProgram(provider);
 
-        // Fetch all proposal accounts
         const allAccounts = await program.account.proposalAccount.all();
 
         const proposalList: ProposalItem[] = allAccounts.map((account: any) => ({

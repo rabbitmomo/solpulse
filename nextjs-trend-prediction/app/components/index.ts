@@ -4,3 +4,6 @@ export { ReleaseResult } from './ReleaseResult';
 export { ClaimReward } from './ClaimReward';
 export { TrendViewer } from './TrendViewer';
 export { PredictionsList } from './PredictionsList';
+export { BedrockChat } from './BedrockChat';
+export { GoogleSearch } from './GoogleSearch';
+export { PredictionInsight } from './PredictionInsight';

@@ -32,7 +32,6 @@ export const Vote: React.FC<VoteProps> = ({ proposalTitle, proposalAuthor, onVot
       const provider = new anchor.AnchorProvider(connection, wallet as any, {});
       const program = getProgram(provider);
 
-      // Derive proposal PDA
       const [proposalPDA] = PublicKey.findProgramAddressSync(
         [Buffer.from('proposal'), proposalAuthor.toBuffer(), Buffer.from(proposalTitle)],
         program.programId
@@ -65,8 +64,6 @@ export const Vote: React.FC<VoteProps> = ({ proposalTitle, proposalAuthor, onVot
     setSuccess(null);
 
     try {
-      console.log(`🗳️ Voting ${direction}...`);
-
       const provider = new anchor.AnchorProvider(connection, wallet as any, {});
       const program = getProgram(provider);
 
@@ -75,12 +72,8 @@ export const Vote: React.FC<VoteProps> = ({ proposalTitle, proposalAuthor, onVot
         program.programId
       );
 
-      console.log('📌 Proposal PDA:', proposalPDA.toBase58());
-
       const voteDirectionEnum = direction === 'YES' ? { yes: {} } : { no: {} };
 
-      // Use Anchor's built-in RPC method for cleaner transaction handling
-      console.log('🚀 Sending transaction via Anchor RPC...');
       const signature = await program.methods
         .voteOnProposal(voteDirectionEnum)
         .accounts({
@@ -90,7 +83,6 @@ export const Vote: React.FC<VoteProps> = ({ proposalTitle, proposalAuthor, onVot
         })
         .rpc();
 
-      console.log('⏳ Waiting for confirmation...');
       await connection.confirmTransaction(signature, 'confirmed');
 
       setSuccess(`✅ Vote recorded! TX: ${signature}`);
@@ -101,7 +93,6 @@ export const Vote: React.FC<VoteProps> = ({ proposalTitle, proposalAuthor, onVot
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       
-      // Handle specific vote errors
       if (errorMessage.includes('AlreadyVotedYes')) {
         setError('❌ You already voted YES. Switch your vote with the NO button.');
       } else if (errorMessage.includes('AlreadyVotedNo')) {

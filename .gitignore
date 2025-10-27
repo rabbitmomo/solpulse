@@ -1,0 +1,12 @@
+# editor & vscode
+.vscode/
+.history/
+.lh/
+
+# env files
+.env*
+.env.local
+
+# misc
+.DS_Store
+*.log

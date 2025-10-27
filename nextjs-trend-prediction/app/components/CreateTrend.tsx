@@ -75,7 +75,6 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
       const addressToUse = formData.tokenAddress.trim() || DEFAULT_TOKEN;
       const tokenAddress = new PublicKey(addressToUse);
 
-      // Derive proposal PDA
       const [proposalPDA] = PublicKey.findProgramAddressSync(
         [
           Buffer.from('proposal'),
@@ -85,13 +84,6 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
         program.programId
       );
 
-      console.log('📌 Proposal PDA:', proposalPDA.toBase58());
-      console.log('📋 Title:', formData.title);
-      console.log('📝 Description:', formData.description);
-      console.log('🪙 Token:', tokenAddress.toBase58());
-      console.log('⏰ Expires:', new Date(expirationTime * 1000).toISOString());
-
-      console.log('🚀 Sending transaction via Anchor RPC...');
       const signature = await program.methods
         .createProposal(
           formData.title,
@@ -106,7 +98,6 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
         })
         .rpc();
 
-      console.log('⏳ Waiting for confirmation...');
       await connection.confirmTransaction(signature, 'confirmed');
 
       const successMessage = `✅ Proposal created!\nTX: ${signature}\nTrend ID: ${proposalPDA.toBase58()}`;
@@ -115,17 +106,12 @@ export const CreateTrend: React.FC<CreateProposalProps> = ({ onProposalCreated }
       onProposalCreated?.(formData.title);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
-      console.error('❌ Full error details:', err);
-      console.error('❌ Error message:', errorMessage);
       
-      // Check for specific Solana errors
       if (errorMessage.includes('0x0') || errorMessage.includes('custom program error: 0x0')) {
-        // This is an account already exists error
-        setError('❌ A prediction with this title already exists for your account. Please use a different title.');
+        setError('❌ Prediction title exists for your account.');
       } else if (errorMessage.includes('already been processed')) {
-        setError('❌ Transaction already processed. This might be a duplicate submission.');
+        setError('❌ Transaction already processed.');
       } else if (err && typeof err === 'object' && 'logs' in err) {
-        console.error('❌ Transaction logs:', (err as any).logs);
         setError(`❌ Error: ${errorMessage}`);
       } else {
         setError(`❌ Error: ${errorMessage}`);

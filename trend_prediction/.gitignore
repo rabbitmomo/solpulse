@@ -5,3 +5,11 @@ target
 node_modules
 test-ledger
 .yarn
+
+# editor & vscode
+.vscode/
+.history/
+.lh/
+
+# env files
+.env*

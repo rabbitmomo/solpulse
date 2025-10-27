@@ -5,6 +5,7 @@ import * as anchor from '@coral-xyz/anchor';
 import { useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import { getProgram } from '@/lib/program';
+import { PredictionInsight } from './PredictionInsight';
 
 interface ProposalViewerProps {
   proposalTitle: string;
@@ -47,7 +48,6 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
         const provider = new anchor.AnchorProvider(connection, {} as any, {});
         const program = getProgram(provider);
 
-        // Derive proposal PDA
         const [pda] = PublicKey.findProgramAddressSync(
           [Buffer.from('proposal'), proposalAuthor.toBuffer(), Buffer.from(proposalTitle)],
           program.programId
@@ -56,7 +56,6 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
         console.log('📌 Fetching proposal from PDA:', pda.toBase58());
         setProposalPDA(pda.toBase58());
 
-        // Fetch proposal account
         const proposalAccount = await program.account.proposalAccount.fetch(pda);
 
         const formattedProposal: ProposalData = {
@@ -120,7 +119,6 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
   const yesPercentage = totalVotes > 0 ? (proposal.yesVotes / totalVotes) * 100 : 0;
   const noPercentage = totalVotes > 0 ? (proposal.noVotes / totalVotes) * 100 : 0;
 
-  // Calculate confidence index: |YES - NO| / (YES + NO) * 100
   const confidenceIndex =
     totalVotes > 0 ? (Math.abs(proposal.yesVotes - proposal.noVotes) / totalVotes) * 100 : 0;
 
@@ -129,7 +127,6 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
   const isExpired = timeRemaining <= 0;
   const hoursRemaining = Math.ceil(timeRemaining / 3600);
 
-  // Determine outcome text
   let outcomeText = 'Not Closed';
   if (proposal.closed && proposal.outcome) {
     if (proposal.outcome.yesWins) {
@@ -148,10 +145,11 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
       </div>
       <div className="card-body">
         <div className="space-y-4">
-        <div className="border-bottom pb-3 mb-3">
-          <p className="small text-muted">Title</p>
-          <p className="fw-bold" style={{ color: '#14f195' }}>{proposal.title}</p>
-        </div>
+
+          <div className="border-bottom pb-3 mb-3">
+            <p className="small text-muted">Title</p>
+            <p className="fw-bold" style={{ color: '#14f195' }}>{proposal.title}</p>
+          </div>
 
         <div className="border-bottom pb-3 mb-3">
           <p className="small text-muted">Description</p>
@@ -185,7 +183,6 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
         <div className="border-top pt-3 mb-3">
           <p className="small text-muted fw-bold mb-3">Voting Results</p>
 
-          {/* YES Votes */}
           <div className="mb-3 p-3 rounded" style={{ background: 'rgba(20, 241, 149, 0.08)', border: '1px solid rgba(20, 241, 149, 0.3)' }}>
             <div className="d-flex justify-content-between mb-2">
               <span className="small fw-bold" style={{ color: '#14f195' }}>YES: {proposal.yesVotes}</span>
@@ -199,7 +196,6 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
             </div>
           </div>
 
-          {/* NO Votes */}
           <div className="mb-3 p-3 rounded" style={{ background: 'rgba(153, 69, 255, 0.08)', border: '1px solid rgba(153, 69, 255, 0.3)' }}>
             <div className="d-flex justify-content-between mb-2">
               <span className="small fw-bold" style={{ color: '#9945ff' }}>NO: {proposal.noVotes}</span>
@@ -219,7 +215,6 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
           </div>
         </div>
 
-        {/* Confidence Index */}
         <div className="p-3 rounded mb-3" style={{ background: 'rgba(153, 69, 255, 0.1)', border: '1px solid #9945ff' }}>
           <p className="small fw-bold mb-2">Confidence Index</p>
           <div className="d-flex justify-content-between align-items-start mb-2">
@@ -236,13 +231,18 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
           </div>
         </div>
 
-        {/* Proposal Status */}
         {proposal.closed && (
           <div className="p-3 rounded mb-3" style={{ background: 'rgba(20, 241, 149, 0.1)', border: '1px solid #14f195' }}>
             <p className="small fw-bold mb-1" style={{ color: '#14f195' }}>Status: CLOSED</p>
             <p className="mb-0 fw-bold" style={{ color: '#14f195' }}>{outcomeText}</p>
           </div>
         )}
+
+        <PredictionInsight
+          title={proposal.title}
+          description={proposal.description}
+          confidenceIndex={confidenceIndex}
+        />
 
         <div className="border-top pt-3">
           <div className="mb-3">
