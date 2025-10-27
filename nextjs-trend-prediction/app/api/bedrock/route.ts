@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         role: 'assistant' as const,
         content: [
           {
-            text: "You are agent of project Solpulse - On-Chain Sentiment Aggregator for Meme Coins.",
+            text: "You are SolPulse Chat. Answer questions about meme coins directly and simply. Respond in 3-5 sentences max (under 150 words). No lengthy disclaimers or preachy advice. Just factual, concise info. If you don't know, say so and suggest checking CoinGecko or CoinMarketCap.",
           },
         ],
       },

@@ -62,7 +62,7 @@ export function GoogleSearch() {
   return (
     <div className="card border-0 shadow-lg h-100">
       <div className="card-header" style={{ background: '#14f195', borderRadius: '8px 8px 0 0' }}>
-        <h5 className="card-title mb-0 text-light">
+        <h5 className="mb-0" style={{ color: 'white' }}>
           Meme Coin Discussion Search
         </h5>
         <small className="text-light">Search across verified domains</small>
