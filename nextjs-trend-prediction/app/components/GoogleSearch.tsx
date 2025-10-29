@@ -120,7 +120,6 @@ export function GoogleSearch() {
           <div className="text-center text-secondary py-5">
             <p>Enter a search query to explore results</p>
             <small>Results are filtered by verified domains</small>
-            <hr style={{ borderColor: '#9945ff', margin: '12px 0' }} />
             <div style={{ marginTop: '15px', fontSize: '0.8rem' }}>
               <p style={{ color: '#14f195', fontWeight: 'bold', marginBottom: '8px' }}>Verified Domains:</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
