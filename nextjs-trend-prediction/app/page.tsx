@@ -175,8 +175,8 @@ export default function Home() {
                 />
               </div>
               <div className="col-lg-4 d-flex flex-column gap-3">
-                <BedrockChat />
                 <GoogleSearch />
+                <BedrockChat />
               </div>
             </div>
           )}

@@ -84,7 +84,7 @@ export function BedrockChat() {
       <div
         className="card-body"
         style={{
-          height: '350px',
+          height: '250px',
           overflowY: 'auto',
           background: '#1a1a2e',
           borderRadius: '0 0 0 8px',
@@ -92,7 +92,7 @@ export function BedrockChat() {
       >
         {messages.length === 0 ? (
           <div className="text-center text-secondary py-5">
-            <p>💬 Start a conversation with Bedrock AI</p>
+            <p>Start a conversation with Bedrock AI</p>
             <small>Type a message to get insights and clarifications</small>
           </div>
         ) : (

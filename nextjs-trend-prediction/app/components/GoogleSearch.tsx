@@ -71,7 +71,7 @@ export function GoogleSearch() {
       <div
         className="card-body"
         style={{
-          height: '350px',
+          height: '250px',
           overflowY: 'auto',
           background: '#1a1a2e',
           borderRadius: '0 0 0 8px',
@@ -118,8 +118,25 @@ export function GoogleSearch() {
 
         {!hasSearched && !isLoading && (
           <div className="text-center text-secondary py-5">
-            <p>🔎 Enter a search query to explore results</p>
+            <p>Enter a search query to explore results</p>
             <small>Results are filtered by verified domains</small>
+            <hr style={{ borderColor: '#9945ff', margin: '12px 0' }} />
+            <div style={{ marginTop: '15px', fontSize: '0.8rem' }}>
+              <p style={{ color: '#14f195', fontWeight: 'bold', marginBottom: '8px' }}>Verified Domains:</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
+                <span style={{ color: '#9945ff' }}>Twitter</span>
+                <span style={{ color: '#9945ff' }}>Reddit</span>
+                <span style={{ color: '#9945ff' }}>Medium</span>
+                <span style={{ color: '#9945ff' }}>CoinMarketCap</span>
+                <span style={{ color: '#9945ff' }}>CoinGecko</span>
+                <span style={{ color: '#9945ff' }}>Decrypt</span>
+                <span style={{ color: '#9945ff' }}>CryptoNews</span>
+                <span style={{ color: '#9945ff' }}>CoinDesk</span>
+                <span style={{ color: '#9945ff' }}>TheBlock</span>
+                <span style={{ color: '#9945ff' }}>Blockworks</span>
+                <span style={{ color: '#9945ff' }}>Cointelegraph</span>
+              </div>
+            </div>
           </div>
         )}
 

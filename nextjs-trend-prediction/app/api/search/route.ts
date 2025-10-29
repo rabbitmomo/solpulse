@@ -4,14 +4,18 @@ import axios from 'axios';
 const DISCUSSION_ALLOWED_DOMAINS = [
   'twitter.com',
   'reddit.com',
-  'discord.com',
   'medium.com',
-  'github.com',
   'coinmarketcap.com',
   'coingecko.com',
+  'decrypt.co',
+  'cryptonews.com',
+  'coindesk.com',
+  'theblock.co',
+  'blockworks.co',
+  'cointelegraph.com',
 ];
 
-const RESULTS_PER_DOMAIN = 1;
+const RESULTS_PER_DOMAIN = 10;
 
 export async function POST(req: NextRequest) {
   const { query } = await req.json();
@@ -53,12 +57,21 @@ export async function POST(req: NextRequest) {
 
         const items = response.data.items || [];
         
+        const extractDateFromSnippet = (snippet: string) => {
+          const dateMatch = snippet.match(/(\w+\s+\d+,?\s+\d{4})/);
+          if (dateMatch) {
+            return new Date(dateMatch[1]).toISOString();
+          }
+          return null;
+        };
+        
         const mapped = items.map((item: any) => ({
           title: item.title,
           link: item.link,
           snippet: item.snippet,
           image: item.pagemap?.cse_image?.[0]?.src || null,
-          domain
+          domain,
+          date: extractDateFromSnippet(item.snippet) || item.pagemap?.metatags?.[0]?.['article:published_time'] || null
         }));
 
         allResults.push(...mapped);
@@ -68,6 +81,16 @@ export async function POST(req: NextRequest) {
         // Continue on error
       }
     }
+
+    allResults.sort((a: any, b: any) => {
+      const dateA = a.date ? new Date(a.date).getTime() : -1;
+      const dateB = b.date ? new Date(b.date).getTime() : -1;
+      if (dateA === -1 && dateB === -1) return 0;
+      if (dateA === -1) return 1;
+      if (dateB === -1) return -1;
+      return dateB - dateA;
+    });
+    console.log('Total discussion results found:', allResults);
 
     return NextResponse.json({ results: allResults });
   } catch (error) {
