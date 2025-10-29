@@ -21,7 +21,7 @@ A decentralized prediction platform on **Solana Devnet** where users create meme
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Prerequisites
 - Node.js v18+ and npm v9+
