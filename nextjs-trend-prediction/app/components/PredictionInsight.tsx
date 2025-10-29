@@ -67,7 +67,6 @@ Answer with 4 lines ONLY. Start each line with a dash:
 - Likelihood: (high/medium/low)
 - Risk: (high/medium/low)`;
 
-      console.log('🤖 Sending to Bedrock...');
       const bedrockResponse = await fetch('/api/bedrock', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

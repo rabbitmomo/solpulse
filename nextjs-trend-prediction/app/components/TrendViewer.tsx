@@ -119,8 +119,7 @@ export const TrendViewer: React.FC<ProposalViewerProps> = ({
   const yesPercentage = totalVotes > 0 ? (proposal.yesVotes / totalVotes) * 100 : 0;
   const noPercentage = totalVotes > 0 ? (proposal.noVotes / totalVotes) * 100 : 0;
 
-  const confidenceIndex =
-    totalVotes > 0 ? (Math.abs(proposal.yesVotes - proposal.noVotes) / totalVotes) * 100 : 0;
+  const confidenceIndex = yesPercentage;
 
   const now = Math.floor(Date.now() / 1000);
   const timeRemaining = proposal.expirationTime - now;
